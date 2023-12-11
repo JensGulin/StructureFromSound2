@@ -1,5 +1,6 @@
 function raw = read_experiment_audio(experiment_path)
     fpath = strcat(experiment_path, 'info.json'); 
+    assert(isfile(fpath),"File required: " + fpath);
     fid = fopen(fpath); 
     rawfile = fread(fid,inf); 
     str = char(rawfile'); 
@@ -7,7 +8,8 @@ function raw = read_experiment_audio(experiment_path)
     val = jsondecode(str);
     
     raw.speedofsound = 343.2;
-    raw.a_sr = val.sampling_rate; 
+    raw.a_sr = val.sampling_rate;
+    raw.number_of_mics = val.number_of_mics
     
     for i = 1:val.number_of_mics
         [y,fs] = audioread(strcat(experiment_path, "Track ", num2str(i), ".wav"));
